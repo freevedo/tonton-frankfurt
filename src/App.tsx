@@ -11,7 +11,7 @@ function App() {
   return (
     <React.Fragment>
       <AppAppBar />
-      <Router basename='/tonton-frankfurt'>
+      <Router>
         <Routes>
           <Route path="/" element={<MainContent />} />
           <Route path="/reservation-details" element={<ReservationDetails />} />
