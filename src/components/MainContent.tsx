@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
@@ -13,14 +14,10 @@ import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 
 function MainContent() {
   const [persons, setPersons] = React.useState("2");
-  const [timeValue, setTimeValue] = React.useState<Dayjs | null>(
-    dayjs("2025-03-01T12:00")
-  );
-  const [dateValue, setDateValue] = React.useState<Dayjs | null>(
-    dayjs("2025-03-01")
-  );
+  const [timeValue, setTimeValue] = React.useState<Dayjs | null>(dayjs("2025-03-01T12:00"));
+  const [dateValue, setDateValue] = React.useState<Dayjs | null>(dayjs("2025-03-01"));
   const [selectedTime, setSelectedTime] = React.useState<string | null>(null);
-
+  const navigate = useNavigate();
   const handleChange = (event: SelectChangeEvent) => {
     setPersons(event.target.value as string);
   };
@@ -36,15 +33,13 @@ function MainContent() {
     }
 
     const reservationData = {
-      persons: persons,
+      persons,
       date: dateValue ? dateValue.format("YYYY-MM-DD") : null,
       time: selectedTime,
     };
 
-    console.log("Reservation Data:", JSON.stringify(reservationData, null, 2));
-    alert(`Reservation Data:\n${JSON.stringify(reservationData, null, 2)}`);
+    navigate("/reservation-details", { state: reservationData });
   };
-
   return (
     <div>
       <Box
@@ -60,19 +55,10 @@ function MainContent() {
       >
         <FormControl fullWidth>
           <InputLabel id="persons-label">Personen</InputLabel>
-          <Select
-            labelId="persons-label"
-            id="persons"
-            value={persons}
-            label="Personen"
-            onChange={handleChange}
-            type="number"
-          >
-            <MenuItem value={1}>1</MenuItem>
-            <MenuItem value={2}>2</MenuItem>
-            <MenuItem value={3}>3</MenuItem>
-            <MenuItem value={4}>4</MenuItem>
-            <MenuItem value={5}>5</MenuItem>
+          <Select labelId="persons-label" id="persons" value={persons} onChange={handleChange} label="Personen">
+            {[1, 2, 3, 4, 5].map((num) => (
+              <MenuItem key={num} value={num}>{num}</MenuItem>
+            ))}
           </Select>
         </FormControl>
         <FormControl fullWidth>
