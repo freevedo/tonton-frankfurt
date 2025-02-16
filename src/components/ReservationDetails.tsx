@@ -9,6 +9,7 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { createBooking } from "./Api";
 import Alert from '@mui/material/Alert';
 import CheckIcon from '@mui/icons-material/Check';
+import LinearProgress from '@mui/material/LinearProgress';
 function ReservationDetails() {
   const location = useLocation();
   const reservationData = location.state || {};
@@ -17,6 +18,8 @@ function ReservationDetails() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   // Button is enabled only if name is provided and either email or phone is filled
   const isFormValid = name.trim() !== "" && (email.trim() !== "" || phone.trim() !== "");
@@ -31,17 +34,24 @@ function ReservationDetails() {
       phone,
     };
     try {
+      setLoading(true);
       const response = await createBooking(finalReservation);
       if (response.success){
         setSuccess(true);
+        setLoading(false);
+        setError(false);
       }
       else{
         setSuccess(false);
+        setLoading(false);
+        setError(true);
       }
       console.log("Booking created:", response);
     }catch(error){
       console.error("Error creating booking:", error);
       setSuccess(false);
+      setLoading(false);
+      setError(true);
     }
   
     
@@ -61,16 +71,20 @@ function ReservationDetails() {
   return (
     // add a success message after the form is submitted
     <>
-    {success && <Alert severity="success" sx={{ maxWidth: 400, margin: "auto", mt: 5, padding: 3, boxShadow: 3, borderRadius: 2, marginBottom: 5 }}>
-      <CheckIcon sx={{ mr: 1 }} />
-      Vielen Dank! Ihre Reservierung wurde erfolgreich abgeschlossen.
-    </Alert>}
+    {/* while waiting show linear progress */}
 
-    {!success &&
+    {loading && <LinearProgress sx={{ width: '100%', marginTop: 5 }} />}
+
+    {!success && error &&
     <Alert severity="info" sx={{ maxWidth: 400, margin: "auto", mt: 5, padding: 3, boxShadow: 3, borderRadius: 2, marginBottom: 5 }}>
       Bitte überprüfen Sie Ihre Reservierungsdaten und geben Sie Ihre persönlichen Daten ein.
     </Alert>
     }
+
+    {success && <Alert severity="success" sx={{ maxWidth: 400, margin: "auto", mt: 5, padding: 3, boxShadow: 3, borderRadius: 2, marginBottom: 5 }}>
+      <CheckIcon sx={{ mr: 1 }} />
+      Vielen Dank! Ihre Reservierung wurde erfolgreich abgeschlossen.
+    </Alert>}
     
     <Box sx={{ maxWidth: 400, margin: "auto", mt: 5, padding: 3, boxShadow: 3, borderRadius: 2, marginBottom: 5 }}>
       <Typography variant="h6" gutterBottom>📝 Reservierungsübersicht</Typography>
