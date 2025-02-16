@@ -13,13 +13,13 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 
 function MainContent() {
-  const [persons, setPersons] = React.useState("2");
+  const [people, setpeople] = React.useState("2");
   const [timeValue, setTimeValue] = React.useState<Dayjs | null>(dayjs("2025-03-01T12:00"));
   const [dateValue, setDateValue] = React.useState<Dayjs | null>(dayjs("2025-03-01"));
   const [selectedTime, setSelectedTime] = React.useState<string | null>(null);
   const navigate = useNavigate();
   const handleChange = (event: SelectChangeEvent) => {
-    setPersons(event.target.value as string);
+    setpeople(event.target.value as string);
   };
 
   const handleTimeChange = (time: string) => {
@@ -33,7 +33,7 @@ function MainContent() {
     }
 
     const reservationData = {
-      persons,
+      people,
       date: dateValue ? dateValue.format("YYYY-MM-DD") : null,
       time: selectedTime,
     };
@@ -54,8 +54,8 @@ function MainContent() {
         }}
       >
         <FormControl fullWidth>
-          <InputLabel id="persons-label">Personen</InputLabel>
-          <Select labelId="persons-label" id="persons" value={persons} onChange={handleChange} label="Personen">
+          <InputLabel id="people-label">Personen</InputLabel>
+          <Select labelId="people-label" id="people" value={people} onChange={handleChange} label="Personen">
             {[1, 2, 3, 4, 5].map((num) => (
               <MenuItem key={num} value={num}>{num}</MenuItem>
             ))}
