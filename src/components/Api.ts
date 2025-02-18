@@ -33,7 +33,4 @@ const createBooking = async (booking : Booking ) => {
     }
 };
 
-const bookings = await fetchBookings();
-console.log("Bookings", bookings);
-
 export { fetchBookings, createBooking };
