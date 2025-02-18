@@ -1,7 +1,8 @@
 import { Booking } from "./interface";
+const baseUrl = "https://tonton.yamlabburkina.com"
 const fetchBookings = async () => {
     try {
-        const response = await fetch("http://localhost:3000/bookings"); // Replace with your API URL
+        const response = await fetch(baseUrl + "/bookings"); // Replace with your API URL
         if (!response.ok) {
             throw new Error("Failed to fetch bookings");
         }
@@ -14,7 +15,7 @@ const fetchBookings = async () => {
 
 const createBooking = async (booking : Booking ) => {
     try {
-        const response = await fetch("http://localhost:3000/book", {
+        const response = await fetch(baseUrl + "/book", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
